@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Row, Col, Card, Button, Carousel, Badge } from 'react-bootstrap';
 import { productsData } from '../db/product';
+import { CarritoContext } from '../Context/CarritoContext'; // <-- importamos el contexto
 
 const Tienda = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
-  // Extraer productos y categorías del JSON
+  const { agregarAlCarrito } = useContext(CarritoContext); // <-- usamos useContext
+
   const { products, categories } = productsData;
-  
-  // Filtrar productos por categoría
+
   const filteredProducts = selectedCategory === 'all' 
     ? products 
     : products.filter(product => product.category === selectedCategory);
@@ -116,6 +116,7 @@ const Tienda = () => {
                       size="sm" 
                       className="flex-grow-1"
                       disabled={!product.inStock}
+                      onClick={() => agregarAlCarrito(product)} // <-- funcionalidad agregada
                     >
                       {product.inStock ? 'Agregar al Carrito' : 'Sin Stock'}
                     </Button>

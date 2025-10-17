@@ -1,32 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CarritoContext } from '../Context/CarritoContext';
 import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap';
 
-function Carrito  () {
-  // Ejemplo de productos en el carrito
-  const cartItems = [
-    {
-      id: 1,
-      name: "L'Oréal Paris Men Expert Barber Club Shampoo",
-      price: 15000,
-      quantity: 1,
-      image: "img/Lorealparis_men_expert_barberclub.jpeg"
-    },
-    {
-      id: 2,
-      name: "The Barberia Cera Cabello & Barba",
-      price: 12000,
-      quantity: 2,
-      image: "img/cera_de_barberia.jpg"
-    }
-  ];
+const Carrito = () => {
+  const { carrito, eliminarDelCarrito } = useContext(CarritoContext);
 
-  const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const total = carrito.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
   return (
     <Container className="my-5">
       <h2 className="mb-4">Carrito de Compras</h2>
       
-      {cartItems.length === 0 ? (
+      {carrito.length === 0 ? (
         <Card>
           <Card.Body className="text-center">
             <h5>Tu carrito está vacío</h5>
@@ -39,33 +24,37 @@ function Carrito  () {
           <Col lg={8}>
             <Card>
               <Card.Header>
-                <h5>Productos ({cartItems.length})</h5>
+                <h5>Productos ({carrito.length})</h5>
               </Card.Header>
               <ListGroup variant="flush">
-                {cartItems.map((item) => (
+                {carrito.map((item) => (
                   <ListGroup.Item key={item.id}>
                     <Row className="align-items-center">
                       <Col xs={3} md={2}>
                         <img 
                           src={item.image} 
-                          alt={item.name}
+                          alt={item.name || item.title}
                           className="img-fluid"
                           style={{maxHeight: '80px', objectFit: 'cover'}}
                         />
                       </Col>
                       <Col xs={6} md={6}>
-                        <h6>{item.name}</h6>
+                        <h6>{item.name || item.title}</h6>
                         <p className="text-muted mb-0">${item.price.toLocaleString()}</p>
                       </Col>
                       <Col xs={2} md={2}>
                         <div className="d-flex align-items-center">
                           <Button variant="outline-secondary" size="sm">-</Button>
-                          <span className="mx-2">{item.quantity}</span>
+                          <span className="mx-2">{item.quantity || 1}</span>
                           <Button variant="outline-secondary" size="sm">+</Button>
                         </div>
                       </Col>
                       <Col xs={1} md={2} className="text-end">
-                        <Button variant="outline-danger" size="sm">
+                        <Button 
+                          variant="outline-danger" 
+                          size="sm"
+                          onClick={() => eliminarDelCarrito(item.id)}
+                        >
                           <i className="bi bi-trash"></i>
                         </Button>
                       </Col>

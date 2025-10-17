@@ -12,26 +12,31 @@ import Footer from './components/Footer';
 import Registrarse from './pages/Registrarse';
 import ContrasenaOlvidada from './pages/ContrasenaOlvidada';
 
+// Importar el Provider del carrito
+import { CarritoProvider } from './Context/CarritoContext';
 
 function App() {
   return (
-    <Router>
-      <Navigation />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/nosotros" element={<Nosotros />} />
-          <Route path="/tienda" element={<Tienda />} />
-          <Route path="/carrito" element={<Carrito />} />
-          <Route path="/usuario" element={<Usuario />} />
-          <Route path="/iniciar-sesion" element={<IniciarSesion />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/registrarse" element={<Registrarse />} />
-          <Route path="/contrasenaolvidada" element={<ContrasenaOlvidada />} />
-        </Routes>
-      </main>
-      <Footer />
-    </Router>
+    // Envolvemos toda la app con CarritoProvider
+    <CarritoProvider>
+      <Router>
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/nosotros" element={<Nosotros />} />
+            <Route path="/tienda" element={<Tienda />} />
+            <Route path="/carrito" element={<Carrito />} />
+            <Route path="/usuario" element={<Usuario />} />
+            <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+            <Route path="/contacto" element={<Contacto />} />
+            <Route path="/registrarse" element={<Registrarse />} />
+            <Route path="/contrasenaolvidada" element={<ContrasenaOlvidada />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+    </CarritoProvider>
   );
 }
 
